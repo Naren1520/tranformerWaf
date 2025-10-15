@@ -17,8 +17,14 @@ const Dashboard = () => {
     falsePositives: 0
   });
   const [recentThreats, setRecentThreats] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    // Simulate initial loading
+    setTimeout(() => {
+      setLoading(false);
+    }, 2000);
+    
     fetchDetections();
     const interval = setInterval(fetchDetections, 5000); // Refresh every 5 seconds
     return () => clearInterval(interval);
@@ -132,17 +138,55 @@ const Dashboard = () => {
     }
   };
 
+  if (loading) {
+    return (
+      <div className="cyberpunk-loader-container">
+        <div className="cyberpunk-loader">
+          <div className="loader-circuit">
+            <div className="circuit-line"></div>
+            <div className="circuit-line"></div>
+            <div className="circuit-line"></div>
+          </div>
+          <div className="loader-hexagon">
+            <div className="hex-spinner"></div>
+            <div className="hex-core"></div>
+          </div>
+          <div className="loader-text">
+            <span className="glitch" data-text="INITIALIZING">INITIALIZING</span>
+            <div className="loading-dots">
+              <span></span><span></span><span></span>
+            </div>
+          </div>
+          <div className="scan-line"></div>
+        </div>
+        <div className="loader-stats">
+          <div className="stat-item">
+            <span className="stat-label">SYSTEM</span>
+            <span className="stat-value cyberpunk-text">ONLINE</span>
+          </div>
+          <div className="stat-item">
+            <span className="stat-label">AI ENGINE</span>
+            <span className="stat-value cyberpunk-text">LOADING</span>
+          </div>
+          <div className="stat-item">
+            <span className="stat-label">STATUS</span>
+            <span className="stat-value cyberpunk-text">READY</span>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <div className="dashboard-container">
+    <div className="dashboard-container cyberpunk-theme">
       <div className="dashboard-header-fixed">
-        <h1>🧠 AI-Powered Threat Analytics</h1>
+        <h1>AI-POWERED THREAT ANALYTICS</h1>
         <p className="page-description">Real-time ML detection with DistilBERT Transformer model insights</p>
       </div>
       
       <div className="dashboard-content">
         <div className="stats">
         <div className="stat-card ai-powered">
-          <div className="stat-icon">🧠</div>
           <div className="stat-content">
             <h3>AI Detections</h3>
             <div className="stat-number">{mlStats.aiDetections}</div>
@@ -150,7 +194,6 @@ const Dashboard = () => {
           </div>
         </div>
         <div className="stat-card">
-          <div className="stat-icon">📊</div>
           <div className="stat-content">
             <h3>Total Analyzed</h3>
             <div className="stat-number">{mlStats.totalAnalyzed}</div>
@@ -158,7 +201,6 @@ const Dashboard = () => {
           </div>
         </div>
         <div className="stat-card">
-          <div className="stat-icon">🛡️</div>
           <div className="stat-content">
             <h3>Rule-based</h3>
             <div className="stat-number">{stats.total}</div>
@@ -166,7 +208,6 @@ const Dashboard = () => {
           </div>
         </div>
         <div className="stat-card">
-          <div className="stat-icon">⚡</div>
           <div className="stat-content">
             <h3>Response Time</h3>
             <div className="stat-number">{mlStats.processingTime.toFixed(1)}ms</div>
@@ -174,14 +215,12 @@ const Dashboard = () => {
           </div>
         </div>
         <div className="stat-card">
-          <div className="stat-icon">⚠️</div>
           <div className="stat-content">
             <h3>SQL Injection</h3>
             <div className="stat-number">{stats.sqlInjection}</div>
           </div>
         </div>
         <div className="stat-card">
-          <div className="stat-icon">🔒</div>
           <div className="stat-content">
             <h3>Path Traversal</h3>
             <div className="stat-number">{stats.pathTraversal}</div>
@@ -205,22 +244,22 @@ const Dashboard = () => {
           </div>
           <div className="insights-grid">
             <div className="insight-card ai-insight">
-              <h4>🎯 AI Accuracy</h4>
+              <h4>AI ACCURACY</h4>
               <div className="insight-value">{(mlStats.avgConfidence * 100).toFixed(1)}%</div>
               <p>Transformer model confidence</p>
             </div>
             <div className="insight-card">
-              <h4>⚡ ML Processing</h4>
+              <h4>ML PROCESSING</h4>
               <div className="insight-value">{mlStats.processingTime.toFixed(0)}ms</div>
               <p>DistilBERT inference time</p>
             </div>
             <div className="insight-card">
-              <h4>🔍 Detection Rate</h4>
+              <h4>DETECTION RATE</h4>
               <div className="insight-value">{((mlStats.aiDetections + stats.total) / Math.max(mlStats.totalAnalyzed, 1) * 100).toFixed(1)}%</div>
               <p>Threats identified vs total</p>
             </div>
             <div className="insight-card">
-              <h4>🛡️ False Positives</h4>
+              <h4>FALSE POSITIVES</h4>
               <div className="insight-value">{mlStats.falsePositives}</div>
               <p>Estimated incorrect flags</p>
             </div>
@@ -229,13 +268,13 @@ const Dashboard = () => {
 
         <div className="recent-threats-section">
           <div className="section-header">
-            <h2>🚨 Recent AI Detections</h2>
+            <h2>RECENT AI DETECTIONS</h2>
           </div>
           <div className="threats-list">
             {recentThreats.length > 0 ? recentThreats.map((threat, index) => (
               <div key={index} className="threat-item">
                 <div className="threat-indicator">
-                  <span className="threat-icon">🧠</span>
+                  <span className="threat-icon">AI</span>
                   <div className="threat-details">
                     <div className="threat-type">{threat.threat_type || 'AI-Detected Anomaly'}</div>
                     <div className="threat-signature">{threat.pattern_signature || threat.method + ' ' + threat.path}</div>
@@ -248,7 +287,7 @@ const Dashboard = () => {
               </div>
             )) : (
               <div className="no-threats">
-                <div className="no-threats-icon">🛡️</div>
+                <div className="no-threats-icon">SEC</div>
                 <p>No recent AI detections. System is secure!</p>
                 <small>Visit ML Tester to generate test detections</small>
               </div>
