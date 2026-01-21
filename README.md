@@ -82,5 +82,3 @@ quick-waf-prototype/
 ## Important Note
 
 This is a prototype for educational purposes. It demonstrates AI-enhanced web security concepts but should not be used in production without thorough testing and security audits.
-
-Built by Tharun Rai - September 2025
