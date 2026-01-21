@@ -24,7 +24,7 @@ const MLTester = () => {
         req.id === request.id ? { ...req, status: 'analyzing' } : req
       ));
 
-      const response = await fetch('http://localhost:8000/analyze', {
+      const response = await fetch('http://localhost:5000/api/analyze', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -48,7 +48,7 @@ const MLTester = () => {
       ));
 
       // Store malicious patterns if detected
-      if (result.is_attack) {
+      if (result.is_malicious) {
         await storeMaliciousPattern(request, result);
       }
 
@@ -118,23 +118,23 @@ const MLTester = () => {
 
   const getStatusIcon = (status) => {
     switch (status) {
-      case 'ready': return '⏳';
-      case 'analyzing': return '🔄';
-      case 'completed': return '✅';
-      case 'error': return '❌';
-      default: return '⏳';
+      case 'ready': return 'RDY';
+      case 'analyzing': return 'RUN';
+      case 'completed': return 'OK';
+      case 'error': return 'ERR';
+      default: return 'RDY';
     }
   };
 
   const getThreatIcon = (result) => {
-    if (!result || result.error) return '❓';
-    return result.is_attack ? '🚨' : '🛡️';
+    if (!result || result.error) return 'UNK';
+    return result.is_malicious ? 'THR' : 'SEC';
   };
 
   return (
     <div className="container">
       <div className="page-header">
-        <h1>🧠 ML Threat Analyzer</h1>
+        <h1>ML THREAT ANALYZER</h1>
         <p className="page-description">Test Transformer-based detection with multiple concurrent requests</p>
       </div>
 
@@ -145,10 +145,10 @@ const MLTester = () => {
             disabled={isAnalyzing}
             className="analyze-all-btn"
           >
-            {isAnalyzing ? '🔄 Analyzing All...' : '🚀 Analyze All (Async)'}
+            {isAnalyzing ? 'ANALYZING ALL...' : 'ANALYZE ALL (ASYNC)'}
           </button>
           <button onClick={addRequest} className="add-request-btn">
-            ➕ Add Request
+            + ADD REQUEST
           </button>
         </div>
       </div>
@@ -209,13 +209,13 @@ const MLTester = () => {
               <div className="result-display">
                 {results[request.id].error ? (
                   <div className="error-result">
-                    <strong>❌ Error:</strong> {results[request.id].error}
+                    <strong>ERROR:</strong> {results[request.id].error}
                   </div>
                 ) : (
-                  <div className={`threat-result ${results[request.id].is_attack ? 'dangerous' : 'safe'}`}>
+                  <div className={`threat-result ${results[request.id].is_malicious ? 'dangerous' : 'safe'}`}>
                     <div className="result-header">
                       <span className="prediction">
-                        {results[request.id].is_attack ? '🚨 THREAT DETECTED' : '🛡️ SAFE REQUEST'}
+                        {results[request.id].is_malicious ? 'THREAT DETECTED' : 'SAFE REQUEST'}
                       </span>
                       <span className="confidence">
                         {(results[request.id].confidence * 100).toFixed(1)}%

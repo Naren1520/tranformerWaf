@@ -77,7 +77,7 @@ const IncrementalDataPage = () => {
         </div>
         
         <button className="export-btn" onClick={exportData}>
-          📥 Export Training Data
+           Export Training Data
         </button>
       </div>
 

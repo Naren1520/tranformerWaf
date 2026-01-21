@@ -10,11 +10,11 @@ function App() {
     <Router>
       <div className="app">
         <nav className="navbar">
-          <h1>�️ WAF Security Dashboard</h1>
+          <h1>WAF SECURITY DASHBOARD</h1>
           <div className="nav-links">
-            <Link to="/" className="nav-link">Analytics</Link>
-            <Link to="/training-data" className="nav-link">Training Data</Link>
-            <Link to="/ml-tester" className="nav-link">ML Tester</Link>
+            <Link to="/" className="nav-link">ANALYTICS</Link>
+            <Link to="/training-data" className="nav-link">TRAINING DATA</Link>
+            <Link to="/ml-tester" className="nav-link">ML TESTER</Link>
           </div>
         </nav>
 

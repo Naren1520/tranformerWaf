@@ -44,6 +44,32 @@ const TrainingData = () => {
       })));
     } catch (error) {
       console.error('Error fetching logs:', error);
+      // Fallback to mock data
+      const mockData = [
+        {
+          timestamp: new Date().toISOString(),
+          request_signature: "GET /admin.php?user=admin' OR '1'='1",
+          is_malicious: true,
+          threat_type: "SQL Injection",
+          confidence: 0.95,
+          method: "GET",
+          path: "/admin.php"
+        },
+        {
+          timestamp: new Date(Date.now() - 60000).toISOString(), // 1 minute ago
+          request_signature: "GET /products?page=1&category=electronics&sort=price",
+          is_malicious: false,
+          threat_type: "benign",
+          confidence: 0.02,
+          method: "GET",
+          path: "/products"
+        }
+      ];
+      setLogs(mockData.map(log => ({
+        ...log,
+        normalized_request: normalizeRequest(log),
+        tokens: tokenizeRequest(log)
+      })));
     }
   };
 
@@ -167,28 +193,28 @@ const TrainingData = () => {
 
       <div className="stats">
         <div className="stat-card">
-          <div className="stat-icon">📊</div>
+          <div className="stat-icon">TOT</div>
           <div className="stat-content">
             <h3>Total Samples</h3>
             <div className="stat-number">{filteredLogs.length}</div>
           </div>
         </div>
         <div className="stat-card">
-          <div className="stat-icon">🚨</div>
+          <div className="stat-icon">MAL</div>
           <div className="stat-content">
             <h3>Malicious</h3>
             <div className="stat-number">{filteredLogs.filter(l => l.is_malicious).length}</div>
           </div>
         </div>
         <div className="stat-card">
-          <div className="stat-icon">✅</div>
+          <div className="stat-icon">BEN</div>
           <div className="stat-content">
             <h3>Benign</h3>
             <div className="stat-number">{filteredLogs.filter(l => !l.is_malicious).length}</div>
           </div>
         </div>
         <div className="stat-card">
-          <div className="stat-icon">🔤</div>
+          <div className="stat-icon">TOK</div>
           <div className="stat-content">
             <h3>Unique Tokens</h3>
             <div className="stat-number">{[...new Set(filteredLogs.flatMap(l => l.tokens))].length}</div>
@@ -286,7 +312,7 @@ const TrainingData = () => {
             </table>
           ) : (
             <div className="no-data">
-              <div className="no-data-icon">📊</div>
+              <div className="no-data-icon">DATA</div>
               <p>No training data available</p>
             </div>
           )}
