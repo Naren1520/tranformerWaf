@@ -1,6 +1,6 @@
 # 🚀 Quick WAF Prototype
 
-Hi, I'm Tharun Rai, and this is my AI-powered Web Application Firewall prototype. It combines traditional security rules with a DistilBERT transformer model to detect and block malicious web requests in real-time.
+Hi, I'm Naren S J, and this is my AI-powered Web Application Firewall prototype. It combines traditional security rules with a DistilBERT transformer model to detect and block malicious web requests in real-time.
 
 ## Features
 
